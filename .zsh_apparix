@@ -101,7 +101,7 @@ function to () {
   if test "$2"; then
     loc=$(apparix --try-current-last -favour rOl "$1" "$2")
   elif test "$1"; then
-    if test "$1" == '-'; then
+    if [[ "$1" == '-' ]]; then
       loc="-"
     else
       loc=$(apparix --try-current-last -favour rOl "$1")
