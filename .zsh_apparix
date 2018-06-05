@@ -1,0 +1,138 @@
+# basically just a reduced .bash_apparix
+
+function toot () {
+   if test "$3"; then
+      file="$(apparix -favour rOl "$1" "$2")/$3"
+   elif test "$2"; then
+      file="$(apparix -favour rOl "$1")/$2"
+   else
+      echo "toot tag dir file OR toot tag file"
+      return
+   fi
+   if [[ $? == 0 ]]; then
+      $EDITOR $file
+   fi
+}
+
+function annot () {
+   toot $@ ANNOT
+}
+
+function todo () {
+   toot $@ TODO
+}
+
+function clog () {
+   toot $@ ChangeLog
+}
+
+function note () {
+   toot $@ NOTES
+}
+
+function ald () {
+  if test "$2"; then
+    loc=$(apparix -favour rOl "$1" "$2")
+  elif test "$1"; then
+    loc=$(apparix --try-current-first -favour rOl "$1")
+  fi
+  if [[ $? == 0 ]]; then
+    ls "$loc"
+  fi
+}
+
+function als () {
+  loc=$(apparix -favour rOl "$1")
+  if test "$1"; then
+    loc=$(apparix -favour rOl "$1")
+  fi
+  if [[ $? == 0 ]]; then
+     if test "$2"; then
+       ls "$loc"/$2
+    else
+       ls "$loc"
+    fi
+  fi
+}
+
+function als1 () {
+  if test "$2"; then
+    loc=$(apparix -favour rOl "$1" "$2")
+  elif test "$1"; then
+    loc=$(apparix --try-current-first -favour rOl "$1")
+  fi
+  if [[ $? == 0 ]]; then
+    ls "$loc"
+  fi
+}
+
+
+function ae () {
+  if test "$2"; then
+    loc=$(apparix -favour rOl "$1" "$2")
+  elif test "$1"; then
+    loc=$(apparix --try-current-first -favour rOl "$1")
+  fi
+  if [[ $? == 0 ]]; then
+    files=$(ls $loc)
+    if [[ $? == 0 ]]; then
+       $EDITOR $files
+    else
+      echo "no listing for $loc"
+    fi
+  fi
+}
+
+function whence () {
+  if test "$2"; then
+    loc=$(apparix -pick $2 "$1")
+  elif test "$1"; then
+   loc=$(apparix "$1")
+  else
+    loc=$HOME
+  fi
+  if [[ $? == 0 ]]; then
+    cd "$loc"
+  fi
+}
+
+function to () {
+  true
+  if test "$2"; then
+    loc=$(apparix --try-current-last -favour rOl "$1" "$2")
+  elif test "$1"; then
+    if test "$1" == '-'; then
+      loc="-"
+    else
+      loc=$(apparix --try-current-last -favour rOl "$1")
+    fi
+  else
+    loc=$HOME
+  fi
+  if [[ $? == 0 ]]; then
+    cd "$loc"
+  fi
+}
+
+function bm () {
+  if test "$2"; then
+    apparix --add-mark "$1" "$2";
+  elif test "$1"; then
+    apparix --add-mark "$1";
+  else
+    apparix --add-mark;
+  fi
+}
+function portal () {
+  if test "$1"; then
+    apparix --add-portal "$1";
+  else
+    apparix --add-portal;
+  fi
+}
+
+export APPARIXLOG=$HOME/.apparixlog
+
+alias via='vi $HOME/.apparixrc'
+
+alias now='cd $(apparix now)'
