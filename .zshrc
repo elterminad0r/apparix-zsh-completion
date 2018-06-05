@@ -1,5 +1,5 @@
 typeset -U fpath
-fpath=(~/zcomp $fpath[@])
+fpath=(~/.zcomp $fpath[@])
 
 autoload -Uz compinit
 compinit
