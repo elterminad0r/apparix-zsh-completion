@@ -1,3 +1,0 @@
-#compdef apparix
-_arguments '1:mark:_values "\n" $(cut -d, -f2 $HOME/.apparix{rc,expand})' \
-           '2:file:_path_files -W $(apparix --try-current-last -favour rOl $words[2] 2>/dev/null)'

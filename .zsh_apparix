@@ -1,4 +1,6 @@
-# basically just a reduced .bash_apparix
+# basically just .bash_apparix, but tweaked for zsh completion. provides several
+# shell functions that interface with apparix to provide bookmarking and
+# traversal of directories, with reasonably sophisticated completion.
 
 function toot () {
    if test "$3"; then
@@ -123,6 +125,7 @@ function bm () {
     apparix --add-mark;
   fi
 }
+
 function portal () {
   if test "$1"; then
     apparix --add-portal "$1";
@@ -130,6 +133,19 @@ function portal () {
     apparix --add-portal;
   fi
 }
+
+function _apparix_file {
+    _arguments '1:mark:_values "\n" $(cut -d, -f2 $HOME/.apparix{rc,expand})' \
+               '2:file:_path_files -W $(apparix --try-current-last -favour rOl $words[2] 2>/dev/null)'
+}
+
+function _apparix_directory {
+    _arguments '1:mark:_values "\n" $(cut -d, -f2 $HOME/.apparix{rc,expand})' \
+               '2:file:_path_files -/W $(apparix --try-current-last -favour rOl $words[2] 2>/dev/null)'
+}
+
+compdef _apparix_file ae apparix
+compdef _apparix_directory to als
 
 export APPARIXLOG=$HOME/.apparixlog
 
