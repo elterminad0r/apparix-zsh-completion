@@ -5,4 +5,4 @@
 autoload -Uz compinit
 compinit
 
-source $HOME/.zsh_apparix
+source $HOME/.bourne_apparix
